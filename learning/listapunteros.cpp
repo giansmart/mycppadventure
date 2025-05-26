@@ -6,22 +6,35 @@ class ListaDinamica {
     private:
         int* elementos;
         int capacidad;
-        int cantidad_actual;
+        int tamanio;
     
     public:
         // Constructor
         ListaDinamica(int _tamanio){
             capacidad = _tamanio;
-            cantidad_actual = 0;
+            tamanio = 0;
             elementos = new int[capacidad];
         }
         void agregar(int elemento){
-            if (cantidad_actual == capacidad) {
-                cout << "Lista llena. No se pudo agregar " << elemento << endl;
-                return;
+            if (tamanio == capacidad) {
+                cout << "Lista llena en " << elemento << endl;
+                duplicarCapacidad();
+                // return;
             }
-            elementos[cantidad_actual] = elemento;
-            cantidad_actual++;
+            elementos[tamanio] = elemento;
+            tamanio++;
+        }
+
+        void duplicarCapacidad() {
+            int nuevaCapacidad = capacidad * 2;
+            int* nuevosElementos = new int[nuevaCapacidad];
+            for (int i = 0; i < tamanio; i++) {
+                nuevosElementos[i] = elementos[i];
+            }
+            delete[] elementos;
+            elementos = nuevosElementos;
+            capacidad = nuevaCapacidad;
+            cout << "Capacidad duplicada a " << capacidad << endl;
         }
 
         int obtener(int indice) {
@@ -34,7 +47,7 @@ class ListaDinamica {
 
         void mostrar() {
             cout << "Elementos de la lista: ";
-            for (int i=0; i < cantidad_actual; i++) {
+            for (int i=0; i < tamanio; i++) {
                 cout << elementos[i] << " ";
             }
         }
